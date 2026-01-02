@@ -8,7 +8,6 @@ const verifyToken = (req, res, next) => {
         return res.status(403).json({ message: 'No token provided' });
     }
 
-    // Expecting format: "Bearer <token>"
     const bearerToken = token.split(' ')[1];
 
     jwt.verify(bearerToken, process.env.JWT_SECRET, (err, decoded) => {

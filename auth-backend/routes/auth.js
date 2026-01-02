@@ -2,34 +2,31 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../db');
 require('dotenv').config();
 
-// =========================
-// Test Route
-// =========================
-router.get('/test', (req, res) => {
-    res.send('Auth route works!');
+router.get('/test', async (req, res) => {
+    const db = req.app.locals.db;
+    try {
+        const [rows] = await db.query('SELECT NOW() as now');
+        res.json(rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Database query failed' });
+    }
 });
 
-// =========================
-// Register Route
-// =========================
 router.post('/register', async (req, res) => {
-    console.log('Register request body:', req.body);
     const { first_name, email, password } = req.body;
+    const db = req.app.locals.db;
 
     try {
-        // Check if user already exists
         const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
         if (rows.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert new user
         await db.execute(
             'INSERT INTO users (first_name, email, password_hash) VALUES (?, ?, ?)',
             [first_name, email, hashedPassword]
@@ -43,14 +40,11 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// =========================
-// Login Route
-// =========================
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    const db = req.app.locals.db;
 
     try {
-        // Find user by email
         const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
         if (rows.length === 0) {
             return res.status(400).json({ message: 'Invalid credentials' });
@@ -58,13 +52,11 @@ router.post('/login', async (req, res) => {
 
         const user = rows[0];
 
-        // Verify password
         const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Generate JWT
         const token = jwt.sign(
             { id: user.id },
             process.env.JWT_SECRET,
@@ -81,8 +73,8 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (err) {
-        console.error('LOGIN ERROR:', err); // Full error logged in terminal
-        res.status(500).json({ message: err.message }); // Show exact error in Postman
+        console.error('LOGIN ERROR:', err);
+        res.status(500).json({ message: err.message });
     }
 });
 
