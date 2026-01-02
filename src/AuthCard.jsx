@@ -12,7 +12,7 @@ function AuthCard() {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = 'https://backend-authentication-production.up.railway.app';
+  const API_BASE_URL = 'https://backendauthentication-production.up.railway.app';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +49,7 @@ function AuthCard() {
       }
 
     } catch (err) {
+      console.error('AuthCard API Error:', err); // Added console.error for client-side debugging
       setMessage({ text: err.message, type: 'error' });
     } finally {
       setLoading(false);

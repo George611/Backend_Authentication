@@ -10,8 +10,12 @@ router.get('/test', async (req, res) => {
         const [rows] = await db.query('SELECT NOW() as now');
         res.json(rows[0]);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Database query failed' });
+        console.error('DATABASE TEST ERROR:', err);
+        res.status(500).json({
+            error: 'Database query failed',
+            details: err.message,
+            code: err.code
+        });
     }
 });
 
