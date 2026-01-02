@@ -12,7 +12,6 @@ function AuthCard() {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
 
-  // Use the live Railway URL
   const API_BASE_URL = 'https://backend-authentication-xxxxx.up.railway.app';
 
   const handleSubmit = async (e) => {
@@ -46,7 +45,6 @@ function AuthCard() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
       } else {
-        // Switch to login after successful registration
         setTimeout(() => setIsLogin(true), 2000);
       }
 
