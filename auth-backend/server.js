@@ -18,9 +18,7 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 
-// =========================
 // Middleware
-// =========================
 app.use(cors({
     origin: isProduction ? process.env.FRONTEND_URL : 'http://localhost:5173',
     credentials: true
@@ -28,12 +26,9 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// =========================
 // Routes
-// =========================
 app.use('/api/auth', authRoutes);
 
-// Static File Serving for Production (optional, if hosting together)
 if (isProduction) {
     app.use(express.static(path.join(__dirname, '../dist')));
     app.get('*', (req, res) => {
@@ -45,7 +40,4 @@ if (isProduction) {
     });
 }
 
-
-const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running in ${isProduction ? 'production' : 'development'} mode on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
