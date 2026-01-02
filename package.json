@@ -9,9 +9,9 @@
   "scripts": {
     "start": "node auth-backend/server.js",
     "build": "echo \"no build needed\"",
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
     "react": "^19.2.0",
