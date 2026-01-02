@@ -14,12 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const isProduction = process.env.NODE_ENV === 'production';
 
-const dbPool = mysql.createPool(process.env.DATABASE_URL || {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: Number(process.env.DB_PORT) || 3306,
+const dbPool = mysql.createPool(process.env.DATABASE_URL || process.env.MYSQL_URL || {
+    host: process.env.MYSQLHOST || process.env.DB_HOST,
+    user: process.env.MYSQLUSER || process.env.DB_USER,
+    password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD,
+    database: process.env.MYSQLDATABASE || process.env.DB_NAME,
+    port: Number(process.env.MYSQLPORT) || Number(process.env.DB_PORT) || 3306,
+    ssl: process.env.DATABASE_URL || process.env.MYSQL_URL ? { rejectUnauthorized: false } : false
 });
 
 dbPool.getConnection()
