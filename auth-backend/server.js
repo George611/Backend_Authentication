@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const isProduction = process.env.NODE_ENV === 'production';
 
-const dbPool = mysql.createPool({
+const dbPool = mysql.createPool(process.env.DATABASE_URL || {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
