@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -36,20 +37,20 @@ function AuthCard() {
         throw new Error(data.message || 'Something went wrong');
       }
 
-      setMessage({
-        text: isLogin ? 'Login successful!' : 'Registration successful! You can now log in.',
-        type: 'success'
-      });
-
       if (isLogin) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        setIsLoggedIn(true);
       } else {
+        setMessage({
+          text: 'Registration successful! You can now log in.',
+          type: 'success'
+        });
         setTimeout(() => setIsLogin(true), 2000);
       }
 
     } catch (err) {
-      console.error('AuthCard API Error:', err); // Added console.error for client-side debugging
+      console.error('AuthCard API Error:', err);
       setMessage({ text: err.message, type: 'error' });
     } finally {
       setLoading(false);
@@ -62,6 +63,14 @@ function AuthCard() {
       [e.target.name]: e.target.value
     });
   };
+
+  if (isLoggedIn) {
+    return (
+      <div className="glass-card animate-fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+        <h1 style={{ fontSize: '4rem', color: 'var(--primary-gold)' }}>100/100</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card animate-fade-in">
@@ -85,7 +94,7 @@ function AuthCard() {
                 type="text"
                 id="first_name"
                 name="first_name"
-                placeholder="John"
+                placeholder="George"
                 required={!isLogin}
                 value={formData.first_name}
                 onChange={handleChange}
