@@ -10,7 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Production Security & Performance Middleware
@@ -45,6 +45,7 @@ if (isProduction) {
     });
 }
 
-const server = app.listen(PORT, () => {
+
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running in ${isProduction ? 'production' : 'development'} mode on port ${PORT}`);
 });

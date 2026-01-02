@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite preview",
-    "dev": "vite",
+    "start": "node auth-backend/server.js",
     "build": "vite build",
+    "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"
   },
