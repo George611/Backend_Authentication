@@ -1,5 +1,8 @@
 {
   "name": "react-auth-app",
+  "engines": {
+    "node": "20.x"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
