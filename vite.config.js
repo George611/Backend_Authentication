@@ -3,16 +3,16 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  preview: {
-    allowedHosts: [
-      'backendauthentication-production.up.railway.app'
-    ]
-  },
   server: {
     allowedHosts: [
       'backendauthentication-production.up.railway.app'
     ],
-    host: true,
+    host: '0.0.0.0',
     port: 8080
+  },
+  preview: {
+    allowedHosts: [
+      'backendauthentication-production.up.railway.app'
+    ]
   }
 })
